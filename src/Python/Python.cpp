@@ -1,11 +1,13 @@
-#define __STDC_WANT_LIB_EXT1__ 1
-
 #include <Python.hpp>
 
 #include <PythonError.hpp>
 #include <PythonObject.hpp>
 
 #include "PythonForward.ipp"
+
+#if SIV3D_PLATFORM(WINDOWS)
+#pragma warning(disable : 4996)
+#endif
 
 namespace s3d
 {
@@ -219,18 +221,11 @@ namespace s3d
     PythonObject Python::ExecuteFile(const char *filePath, const PythonObject &globals, const PythonObject &locals)
     {
         FILE *fp;
-#ifdef __STDC_LIB_EXT1__
-        if (std::fopen_s(&fp, filePath, "rb") != 0)
-        {
-            throw Error{U"ファイル: \"{}\"を開けませんでした。"_fmt(Unicode::Widen(filePath))};
-        }
-#else
         fp = std::fopen(filePath, "rb");
         if (fp == NULL)
         {
             throw Error{U"ファイル: \"{}\"を開けませんでした。"_fmt(Unicode::Widen(filePath))};
         }
-#endif
         PyObject *resultPtr = PyRun_File(fp, filePath, Py_file_input, static_cast<PyObject *>(globals.getHandler().get()), static_cast<PyObject *>(locals.getHandler().get()));
         if (resultPtr == NULL)
         {
