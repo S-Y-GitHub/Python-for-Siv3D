@@ -169,6 +169,8 @@ namespace s3d
 
     void Python::Finalize()
     {
+        mainModule = none;
+        globalNS = none;
         Py_Finalize();
     }
 

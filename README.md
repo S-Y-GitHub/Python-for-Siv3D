@@ -80,6 +80,8 @@ Python C API のヘッダとライブラリがビルド時に必要になりま�
     以上の設定で Python for Siv3D を使用できるようになります。
 
 ## Example
+
+### Hello, Python.
 ```cpp
 #include <Siv3D.hpp>
 
@@ -101,6 +103,154 @@ void Main()
     {
 
     }
+
+	// インタプリタを終了
+	Python::Finalize();
+}
+```
+
+### 基本的な型
+```cpp
+#include <Siv3D.hpp>
+
+// Python.hppをインクルード
+#include <Python.hpp>
+// PythonObject.hppをインクルード
+#include <PythonObject.hpp>
+
+// int
+static void CheckPythonInt()
+{
+	// 1 + 2 = 3
+	PythonObject oneObj(1), twoObj(2);
+	Print << U"{} + {} = {}"_fmt(oneObj, twoObj, oneObj + twoObj);
+
+	// int64型に変換
+	int64 three = static_cast<int32>(oneObj + twoObj);
+	Print << three;
+
+	// 2 ** 128 (Pythonのintは任意長)
+	PythonObject expObj(128);
+	PythonObject bigNumObj = PythonObject::Pow(twoObj, expObj); // ** 演算子の代わりにPow関数を使用
+	Print << U"{} ** {} = {}"_fmt(twoObj, expObj, bigNumObj);
+
+	// BigInt型に変換
+	BigInt bigInt = static_cast<BigInt>(bigNumObj);
+	Print << U"BigInt: " << bigInt;
+}
+
+// float
+static void CheckPythonFloat()
+{
+	// float型のオブジェクトを生成
+	PythonObject pi(Math::Pi), e{Math::E};
+	Print << U"π * e = {}"_fmt(pi * e);
+
+	// Pythonでは int / int = float
+	PythonObject one(1), three(3);
+	Print << U"{} / {} = {}"_fmt(one, three, one / three);
+	// 整数の除算がしたい場合 (// 演算子の代わりにFloorDiv関数を使用)
+	Print << U"{} // {} = {}"_fmt(one, three, PythonObject::FloorDiv(one, three));
+
+	// double型に変換
+	double oneThird = static_cast<double>(one / three);
+	Print << oneThird;
+}
+
+// str
+static void CheckPythonStr()
+{
+	// str型のオブジェクトを生成
+	PythonObject helloObj(U"Hello");
+	Print << helloObj;
+
+	// String型に変換
+	String hello = static_cast<String>(helloObj);
+	Print << hello;
+}
+
+// dict
+static void CheckPythonDict()
+{
+	// dict型のオブジェクトを生成
+	PythonObject dictObj = PythonObject({{PythonObject(U"apple"), PythonObject(120)},
+										 {PythonObject(U"orange"), PythonObject(150)},
+										 {PythonObject(U"banana"), PythonObject(130)}});
+	Print << dictObj;
+	// 要素の取得
+	Print << dictObj[PythonObject(U"apple")];
+
+	// HashTableに変換
+	HashTable<PythonObject, PythonObject> hashTable = static_cast<HashTable<PythonObject, PythonObject>>(dictObj);
+	Print << hashTable;
+}
+
+// list
+static void CheckPythonList()
+{
+	// list型のオブジェクトを生成
+	PythonObject listObj({PythonObject(U"Apple"), PythonObject(2), PythonObject(-0.3)});
+	Print << listObj;
+
+	// for
+	for (int64 i = 0, n = listObj.getLen(); i < n; ++i)
+	{
+		Print << listObj[PythonObject(i)];
+	}
+
+	// 範囲for
+	for (PythonObject elem : listObj)
+	{
+		Print << elem;
+	}
+
+	// Arrayに変換
+	Array<PythonObject> array = static_cast<Array<PythonObject>>(listObj);
+	Print << array;
+}
+
+// tuple
+static void CheckPythonTuple()
+{
+	// tuple型のオブジェクトを生成
+	PythonObject tupleObj = PythonObject::Tuple({PythonObject(U"Apple"), PythonObject(2), PythonObject(-0.3)});
+	Print << tupleObj;
+
+	// for
+	for (int64 i = 0, n = tupleObj.getLen(); i < n; ++i)
+	{
+		Print << tupleObj[PythonObject(i)];
+	}
+
+	// 範囲for
+	for (PythonObject elem : tupleObj)
+	{
+		Print << elem;
+	}
+
+	// Arrayに変換
+	Array<PythonObject> array = static_cast<Array<PythonObject>>(tupleObj);
+	Print << array;
+}
+
+void Main()
+{
+	// インタプリタを初期化
+	Python::Initialize();
+
+	// 表示が多いためSceneのサイズを変更
+	Scene::Resize(1920, 1080);
+
+	CheckPythonInt();
+	CheckPythonFloat();
+	CheckPythonStr();
+	CheckPythonDict();
+	CheckPythonList();
+	CheckPythonTuple();
+
+	while (System::Update())
+	{
+	}
 
 	// インタプリタを終了
 	Python::Finalize();
