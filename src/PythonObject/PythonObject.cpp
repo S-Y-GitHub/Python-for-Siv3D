@@ -546,6 +546,16 @@ namespace s3d
         return val;
     }
 
+    PythonObject::operator uint64() const
+    {
+        uint64 val = PyLong_AsUnsignedLongLong(static_cast<PyObject *>(m_handler.get()));
+        if (val == static_cast<uint64>(-1) && PyErr_Occurred())
+        {
+            ThrowPythonError();
+        }
+        return val;
+    }
+
     PythonObject::operator BigInt() const
     {
         return ToBigInt(toInt());
