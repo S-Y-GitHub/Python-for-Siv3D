@@ -15,15 +15,15 @@ namespace s3d
             {NULL}};
 
         PyModuleDef Siv3DModule = {
-            PyModuleDef_HEAD_INIT,
-            .m_name{"Siv3D"},
-            .m_doc{"Siv3Dの機能をPythonから使用するためのモジュール"},
-            .m_size{-1},
-            .m_methods{Siv3DMethods},
-            .m_slots{NULL},
-            .m_traverse{NULL},
-            .m_clear{NULL},
-            .m_free{NULL}};
+            PyModuleDef_HEAD_INIT, /// m_base
+            "Siv3D",               /// m_name
+            NULL,                  /// m_doc
+            -1,                    /// m_size
+            Siv3DMethods,          /// m_methods
+            NULL,                  /// m_slots
+            NULL,                  /// m_traverse
+            NULL,                  /// m_clear
+            NULL};                 /// m_free
 
         PyMODINIT_FUNC PyInit_Siv3D(void)
         {

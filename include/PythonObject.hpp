@@ -193,7 +193,7 @@ namespace s3d
         PythonObject toDict() const;
         PythonObject toTuple() const;
 
-        [[nodiscard]] ssize_t getLen() const;
+        [[nodiscard]] int64 getLen() const;
 
         PythonObject getAttr(const PythonObject &name) const;
 

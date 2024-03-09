@@ -398,9 +398,9 @@ namespace s3d
         return PythonObjectHandler::FromNewReference(tuplePtr);
     }
 
-    ssize_t PythonObject::getLen() const
+    int64 PythonObject::getLen() const
     {
-        ssize_t val = static_cast<ssize_t>(PyObject_Length(static_cast<PyObject *>(m_handler.get())));
+        int64 val = static_cast<int64>(PyObject_Length(static_cast<PyObject *>(m_handler.get())));
         if (val == -1 && PyErr_Occurred())
         {
             ThrowPythonError();

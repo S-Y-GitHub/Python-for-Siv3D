@@ -63,12 +63,34 @@ namespace s3d
             {NULL}};
 
         PyTypeObject PySiv3DOutputBuffer_Type = {
-            PyVarObject_HEAD_INIT(NULL, 0)
-
-                .tp_name{"OutputBuffer"},
-            .tp_basicsize{sizeof(OutputBuffer)},
-            .tp_flags{Py_TPFLAGS_DEFAULT},
-            .tp_methods{OutputBuffer_Methods}};
+            PyVarObject_HEAD_INIT(NULL, 0) /// PyObject_VAR_HEAD
+            "OutputBuffer",                /// tp_name
+            sizeof(OutputBuffer),          /// tp_basicsize
+            0,                             /// tp_itemsize
+            NULL,                          /// tp_dealloc
+            0,                             /// tp_vectorcall_offset
+            NULL,                          /// tp_getattr
+            NULL,                          /// tp_setattr
+            NULL,                          /// tp_as_async
+            NULL,                          /// tp_repr
+            NULL,                          /// tp_as_number
+            NULL,                          /// tp_as_sequence
+            NULL,                          /// tp_as_mapping
+            NULL,                          /// tp_hash
+            NULL,                          /// tp_call
+            NULL,                          /// tp_str
+            NULL,                          /// tp_getattro
+            NULL,                          /// tp_setattro
+            NULL,                          /// tp_as_buffer
+            Py_TPFLAGS_DEFAULT,            /// tp_flags
+            NULL,                          /// tp_doc
+            NULL,                          /// tp_traverse
+            NULL,                          /// tp_clear
+            NULL,                          /// tp_richcompare
+            0,                             /// tp_weaklistoffset
+            NULL,                          /// tp_iter
+            NULL,                          /// tp_iternext
+            OutputBuffer_Methods};         /// tp_methods
 
         PyObject *PySiv3DOutputBuffer_New(PythonOutput *outputPtr)
         {
