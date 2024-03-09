@@ -2,7 +2,7 @@
 
 ## Overview
 
-Siv3DでPythonを使用できる。
+Siv3DでPythonを使用できます。
 
 ## Features
 
@@ -18,7 +18,32 @@ Siv3DでPythonを使用できる。
 
 ## Installation
 
-* macOS (Apple silicon)
+Python C API のヘッダとライブラリがビルド時に必要になります。
+
+* Windows (Visual Studio)
+
+    このリポジトリの`src`と`include`を適当な場所に配置します。
+    
+    Pythonをインストーラによってインストールした場合、
+    Pythonのヘッダは、
+    `~/AppData/Local/Programs/Python/Python(version)/include`  
+    Pythonのライブラリは、
+    `~/AppData/Local/Programs/Python/Python(version)/libs`  
+    にあります。
+
+    Visual Studioの `プロジェクト` -> `プロパティ` -> `構成プロパティ` -> `VC++ ディレクトリ` -> `全般` のうち、
+    `インクルード ディレクトリ`に以下のパスを追加します。
+    * (このリポジトリのincludeを配置したパス)
+    * (Pythonのincludeのパス)
+
+    また、`ライブラリ ディレクトリ`に以下のパスを追加します。
+    * (Pythonのlibsのパス)
+
+    このライブラリのソースコードはUTF-8を使用して記述されているため、`プロジェクト` -> `プロパティ` -> `構成プロパティ` -> `C/C++` -> `コマンドライン` の`追加のオプション`で `/utf-8` を追加する必要があります。
+
+    `ソリューション エクスプローラ`の`Source Files`にこのリポジトリ内の`src`内のファイルを追加します。
+
+* macOS (Xcode)
 
     Siv3Dは現在のバージョン（v0.6.14）では、Rossetaのみの対応であるため、x86-64版のPythonをインストールする必要があります。
 
