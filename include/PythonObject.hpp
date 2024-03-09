@@ -182,15 +182,23 @@ namespace s3d
         PythonObjectElement operator[](std::initializer_list<PythonObject> indexes);
 
         PythonObjectIterator begin() const;
+
         PythonObjectIterator end() const;
+
         PythonObjectIterator cbegin() const;
+
         PythonObjectIterator cend() const;
 
         PythonObject toInt() const;
+
         PythonObject toFloat() const;
+
         PythonObject toStr() const;
+
         PythonObject toList() const;
+
         PythonObject toDict() const;
+
         PythonObject toTuple() const;
 
         [[nodiscard]] int64 getLen() const;

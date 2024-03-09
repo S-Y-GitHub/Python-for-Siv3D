@@ -42,16 +42,16 @@ namespace s3d
 
         static BigInt ToBigInt(PythonObject long_)
         {
-            BigInt bigInt;
+            BigInt bigInt(0);
             bool negative = long_ < 0;
             if (negative)
             {
-                long_ = PythonObject{long_ * -1};
+                long_ = PythonObject(long_ * -1);
             }
             for (size_t i = 0; long_; i += 64)
             {
-                bigInt |= BigInt{static_cast<uint64>(long_ & PythonObject{~static_cast<uint64>(0)})} << i;
-                long_ >>= PythonObject{i};
+                bigInt |= BigInt(static_cast<uint64>(long_ & PythonObject(~static_cast<uint64>(0)))) << i;
+                long_ >>= PythonObject(64);
             }
             if (negative)
             {
@@ -136,13 +136,13 @@ namespace s3d
     using namespace detail;
 
     PythonObject::PythonObject()
-        : m_handler{PythonObjectHandler::FromBorrowdReference(Py_None)} {}
+        : m_handler(PythonObjectHandler::FromBorrowdReference(Py_None)) {}
 
     PythonObject::PythonObject(const PythonObjectHandler &handler)
-        : m_handler{handler} {}
+        : m_handler(handler) {}
 
     PythonObject::PythonObject(PythonObjectHandler &&handler)
-        : m_handler{std::move(handler)} {}
+        : m_handler(std::move(handler)) {}
 
     PythonObject::PythonObject(const int64 longValue)
     {
@@ -178,7 +178,7 @@ namespace s3d
     }
 
     PythonObject::PythonObject(StringView strValue)
-        : PythonObject{strValue.narrow()} {}
+        : PythonObject(strValue.narrow()) {}
 
     PythonObject::PythonObject(std::string_view strValue)
     {
