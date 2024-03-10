@@ -49,7 +49,7 @@ namespace s3d
 
             void setBlocking(bool blocking);
 
-            bool isBlocking();
+            bool isBlocking() const;
 
         private:
             mutable std::mutex m_mutex{};
@@ -69,9 +69,6 @@ namespace s3d
             SIV3D_CONCEPT_FORMATTABLE
             PythonInput &operator<<(const Formattable &v);
 
-            /// @brief
-            /// @param n
-            /// @return
             std::string read(int64 n = -1);
 
             std::string readline(int64 limit = -1);

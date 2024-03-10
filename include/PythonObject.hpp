@@ -76,6 +76,7 @@ namespace s3d
         friend std::hash<PythonObject>;
 
     public:
+        /// @brief Noneオブジェクトを構築する。
         PythonObject();
 
         PythonObject(const PythonObject &obj) = default;
@@ -86,33 +87,59 @@ namespace s3d
 
         PythonObject(detail::PythonObjectHandler &&handler);
 
+        /// @brief int型のオブジェクトを構築する。
+        /// @param longValue 値
         explicit PythonObject(int64 longValue);
 
+        /// @brief int型のオブジェクトを構築する。
+        /// @param longValue 値
         explicit PythonObject(uint64 longValue);
 
+        /// @brief int型のオブジェクトを構築する。
+        /// @param longValue 値
         explicit PythonObject(const BigInt &longValue);
 
+        /// @brief int型のオブジェクトを構築する。
+        /// @param longValue 値
         SIV3D_CONCEPT_SIGNED_INTEGRAL
         explicit PythonObject(SignedInt longValue);
 
+        /// @brief int型のオブジェクトを構築する。
+        /// @param longValue 値
         SIV3D_CONCEPT_UNSIGNED_INTEGRAL
         explicit PythonObject(UnsignedInt longValue);
 
+        /// @brief float型のオブジェクトを構築する。
+        /// @param floatValue 値
         explicit PythonObject(double floatValue);
 
+        /// @brief float型のオブジェクトを構築する。
+        /// @param floatValue 値
         SIV3D_CONCEPT_FLOATING_POINT
         explicit PythonObject(Float floatValue);
 
+        /// @brief str型のオブジェクトを構築する。
+        /// @param strValue 値
         explicit PythonObject(StringView strValue);
 
+        /// @brief str型のオブジェクトを構築する。
+        /// @param strValue UTF-8の文字列
         explicit PythonObject(std::string_view strValue);
 
+        /// @brief str型のオブジェクトを構築する。
+        /// @param strValue UTF-8の文字列
         explicit PythonObject(const char *strValue);
 
+        /// @brief list型のオブジェクトを構築する。
+        /// @param listValue 値
         explicit PythonObject(const Array<PythonObject> &listValue);
 
+        /// @brief list型のオブジェクトを構築する。
+        /// @param listValue 要素の初期化リスト
         explicit PythonObject(std::initializer_list<PythonObject> listValue);
 
+        /// @brief dict型のオブジェクトを構築する。
+        /// @param dictValue 値
         explicit PythonObject(const HashTable<PythonObject, PythonObject> &dictValue);
 
         /// @brief 空のリストを返す。

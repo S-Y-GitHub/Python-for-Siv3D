@@ -33,6 +33,7 @@ namespace s3d
 
         PythonOutput::operator bool() const
         {
+            std::lock_guard lock{m_mutex};
             return not m_error;
         }
 
@@ -50,6 +51,7 @@ namespace s3d
 
         void PythonOutput::flush()
         {
+            std::lock_guard lock{m_mutex};
             if (m_onFlush)
             {
                 m_onFlush();
@@ -58,12 +60,26 @@ namespace s3d
 
         void PythonOutput::setOnFlush(const std::function<void()> &onFlush)
         {
+            std::lock_guard lock{m_mutex};
             m_onFlush = onFlush;
         }
 
         void PythonOutput::setOnFlush(std::function<void()> &&onFlush)
         {
+            std::lock_guard lock{m_mutex};
             m_onFlush = onFlush;
+        }
+
+        void PythonOutput::setBlocking(const bool blocking)
+        {
+            std::lock_guard lock{m_mutex};
+            m_blocking = blocking;
+        }
+
+        bool PythonOutput::isBlocking() const
+        {
+            std::lock_guard lock{m_mutex};
+            return m_blocking;
         }
 
         void PythonInput::clear()
