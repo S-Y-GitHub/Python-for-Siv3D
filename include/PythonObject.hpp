@@ -115,6 +115,14 @@ namespace s3d
 
         explicit PythonObject(const HashTable<PythonObject, PythonObject> &dictValue);
 
+        /// @brief 空のリストを返す。
+        /// @return 空のリスト
+        static PythonObject List();
+
+        /// @brief 空の辞書を返す。
+        /// @return 空の辞書
+        static PythonObject Dict();
+
         static PythonObject Tuple(const Array<PythonObject> &tupleValue);
 
         static PythonObject Tuple(std::initializer_list<PythonObject> tupleValue);
@@ -159,9 +167,30 @@ namespace s3d
         PythonObject operator-() const;
         PythonObject operator~() const;
 
+        /// @brief 引数なしでこのオブジェクトを呼び出す。
+        /// @return 戻り値
         PythonObject operator()() const;
+
+        /// @brief 一つの引数を使用してこのオブジェクトを呼び出す。
+        /// @param arg 引数
+        /// @return 戻り値
         PythonObject operator()(const PythonObject &arg) const;
+
+        /// @brief 引数リストを使用してこのオブジェクトを呼び出す。
+        /// @param args 引数リスト
+        /// @return 戻り値
         PythonObject operator()(std::initializer_list<PythonObject> args) const;
+
+        /// @brief キーワード引数リストを使用してこのオブジェクトを呼び出す。
+        /// @param kwargs キーワード引数リスト
+        /// @return 戻り値
+        PythonObject operator()(const HashTable<String, PythonObject> &kwargs) const;
+
+        /// @brief 引数リストとキーワード引数リストを使用してこのオブジェクトを呼び出す。
+        /// @param args 引数リスト
+        /// @param kwargs キーワード引数リスト
+        /// @return 戻り値
+        PythonObject operator()(std::initializer_list<PythonObject> args, const HashTable<String, PythonObject> &kwargs) const;
 
         class PythonObjectElement
         {

@@ -209,6 +209,26 @@ namespace s3d
     PythonObject::PythonObject(const HashTable<PythonObject, PythonObject> &dictValue)
         : m_handler{ToPythonDict(dictValue)} {}
 
+    PythonObject PythonObject::List()
+    {
+        PyObject *listPtr = PyList_New(0);
+        if (listPtr == NULL)
+        {
+            detail::ThrowPythonError();
+        }
+        return detail::PythonObjectHandler::FromNewReference(listPtr);
+    }
+
+    PythonObject PythonObject::Dict()
+    {
+        PyObject *dictPtr = PyDict_New();
+        if (dictPtr == NULL)
+        {
+            detail::ThrowPythonError();
+        }
+        return detail::PythonObjectHandler::FromNewReference(dictPtr);
+    }
+
     PythonObject PythonObject::Tuple(const Array<PythonObject> &tupleValue)
     {
         PyObject *tuplePtr = PyTuple_New(tupleValue.size());
@@ -319,6 +339,44 @@ namespace s3d
         if (resultPtr == NULL)
         {
             ThrowPythonError();
+        }
+        return PythonObjectHandler::FromNewReference(resultPtr);
+    }
+
+    PythonObject PythonObject::operator()(const HashTable<String, PythonObject> &kwargs) const
+    {
+        PythonObject emptyTuple = Tuple({});
+        PythonObject kwargsDict = Dict();
+        for (const auto &[kw, arg] : kwargs)
+        {
+            kwargsDict[PythonObject(kw)] = arg;
+        }
+        PyObject *resultPtr = PyObject_Call(
+            static_cast<PyObject *>(m_handler.get()),
+            static_cast<PyObject *>(emptyTuple.m_handler.get()),
+            static_cast<PyObject *>(kwargsDict.m_handler.get()));
+        if (resultPtr == NULL)
+        {
+            detail::ThrowPythonError();
+        }
+        return PythonObjectHandler::FromNewReference(resultPtr);
+    }
+
+    PythonObject PythonObject::operator()(std::initializer_list<PythonObject> args, const HashTable<String, PythonObject> &kwargs) const
+    {
+        PythonObject argsTuple = Tuple(args);
+        PythonObject kwargsDict = Dict();
+        for (const auto &[kw, arg] : kwargs)
+        {
+            kwargsDict[PythonObject(kw)] = arg;
+        }
+        PyObject *resultPtr = PyObject_Call(
+            static_cast<PyObject *>(m_handler.get()),
+            static_cast<PyObject *>(argsTuple.m_handler.get()),
+            static_cast<PyObject *>(kwargsDict.m_handler.get()));
+        if (resultPtr == NULL)
+        {
+            detail::ThrowPythonError();
         }
         return PythonObjectHandler::FromNewReference(resultPtr);
     }
