@@ -178,7 +178,7 @@ namespace s3d
     }
 
     PythonObject::PythonObject(StringView strValue)
-        : PythonObject(strValue.narrow()) {}
+        : PythonObject(strValue.toUTF8()) {}
 
     PythonObject::PythonObject(std::string_view strValue)
     {
@@ -257,7 +257,7 @@ namespace s3d
 
     PythonObject PythonObject::getAttr(StringView name) const
     {
-        return getAttr(name.narrow().c_str());
+        return getAttr(name.toUTF8().c_str());
     }
 
     PythonObject PythonObject::getAttr(const char *name) const
@@ -471,7 +471,7 @@ namespace s3d
         return val;
     }
 
-    Optional<std::string> PythonObject::getOptNarrowString() const
+    Optional<std::string> PythonObject::getOptUTF8String() const
     {
         if (not PyUnicode_Check(static_cast<PyObject *>(m_handler.get())))
         {
@@ -496,7 +496,7 @@ namespace s3d
         {
             ThrowPythonError();
         }
-        return Unicode::Widen(val);
+        return Unicode::FromUTF8(val);
     }
 
     Optional<HashTable<PythonObject, PythonObject>> PythonObject::getOptHashTable() const
@@ -558,7 +558,7 @@ namespace s3d
         {
             ThrowPythonError();
         }
-        return Unicode::Widen(s);
+        return Unicode::FromUTF8(s);
     }
 
     PythonObject::operator int64() const

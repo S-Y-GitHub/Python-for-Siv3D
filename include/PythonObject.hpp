@@ -223,7 +223,7 @@ namespace s3d
 
         [[nodiscard]] Optional<String> getOptString() const;
 
-        [[nodiscard]] Optional<std::string> getOptNarrowString() const;
+        [[nodiscard]] Optional<std::string> getOptUTF8String() const;
 
         Optional<HashTable<PythonObject, PythonObject>> getOptHashTable() const;
 

@@ -45,7 +45,7 @@ namespace s3d
         void PythonOutput::write(const char *text)
         {
             std::lock_guard lock{m_mutex};
-            m_buf += Unicode::Widen(text);
+            m_buf += Unicode::FromUTF8(text);
         }
 
         void PythonOutput::flush()
@@ -189,7 +189,7 @@ namespace s3d
 
     PythonObject Python::Import(StringView moduleName)
     {
-        return Import(moduleName.narrow().c_str());
+        return Import(moduleName.toUTF8().c_str());
     }
 
     PythonObject Python::Import(const char *moduleName)
@@ -204,7 +204,7 @@ namespace s3d
 
     PythonObject Python::Execute(StringView code, const PythonObject &globals, const PythonObject &locals)
     {
-        return Execute(code.narrow().c_str(), globals, locals);
+        return Execute(code.toUTF8().c_str(), globals, locals);
     }
 
     PythonObject Python::Execute(const char *code, const PythonObject &globals, const PythonObject &locals)
@@ -219,7 +219,7 @@ namespace s3d
 
     PythonObject Python::ExecuteFile(StringView filePath, const PythonObject &globals, const PythonObject &locals)
     {
-        return ExecuteFile(filePath.narrow().c_str(), globals, locals);
+        return ExecuteFile(filePath.toUTF8().c_str(), globals, locals);
     }
 
     PythonObject Python::ExecuteFile(const char *filePath, const PythonObject &globals, const PythonObject &locals)
@@ -228,7 +228,7 @@ namespace s3d
         fp = std::fopen(filePath, "rb");
         if (fp == NULL)
         {
-            throw Error{U"ファイル: \"{}\"を開けませんでした。"_fmt(Unicode::Widen(filePath))};
+            throw Error{U"ファイル: \"{}\"を開けませんでした。"_fmt(Unicode::FromUTF8(filePath))};
         }
         PyObject *resultPtr = PyRun_File(fp, filePath, Py_file_input, static_cast<PyObject *>(globals.getHandler().get()), static_cast<PyObject *>(locals.getHandler().get()));
         if (resultPtr == NULL)
@@ -240,7 +240,7 @@ namespace s3d
 
     PythonObject Python::Eval(StringView expr, const PythonObject &globals, const PythonObject &locals)
     {
-        return Eval(expr.narrow().c_str(), globals, locals);
+        return Eval(expr.toUTF8().c_str(), globals, locals);
     }
 
     PythonObject Python::Eval(const char *expr, const PythonObject &globals, const PythonObject &locals)
