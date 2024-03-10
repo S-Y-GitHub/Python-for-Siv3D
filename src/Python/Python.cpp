@@ -141,8 +141,6 @@ namespace s3d
         }
     }
 
-    using namespace detail;
-
     detail::PythonOutput Python::StdOut{};
 
     detail::PythonOutput Python::StdErr{};
@@ -196,7 +194,12 @@ namespace s3d
 
     PythonObject Python::Import(const char *moduleName)
     {
-        return detail::PythonObjectHandler::FromNewReference(PyImport_ImportModule(moduleName));
+        PyObject *modulePtr = PyImport_ImportModule(moduleName);
+        if (modulePtr == NULL)
+        {
+            detail::ThrowPythonError();
+        }
+        return detail::PythonObjectHandler::FromNewReference(modulePtr);
     }
 
     PythonObject Python::Execute(StringView code, const PythonObject &globals, const PythonObject &locals)
@@ -209,10 +212,9 @@ namespace s3d
         PyObject *resultPtr = PyRun_String(code, Py_file_input, static_cast<PyObject *>(globals.getHandler().get()), static_cast<PyObject *>(locals.getHandler().get()));
         if (resultPtr == NULL)
         {
-            ThrowPythonError();
+            detail::ThrowPythonError();
         }
-        PythonObjectHandler handler = PythonObjectHandler::FromNewReference(resultPtr);
-        return handler;
+        return detail::PythonObjectHandler::FromNewReference(resultPtr);
     }
 
     PythonObject Python::ExecuteFile(StringView filePath, const PythonObject &globals, const PythonObject &locals)
@@ -231,10 +233,9 @@ namespace s3d
         PyObject *resultPtr = PyRun_File(fp, filePath, Py_file_input, static_cast<PyObject *>(globals.getHandler().get()), static_cast<PyObject *>(locals.getHandler().get()));
         if (resultPtr == NULL)
         {
-            ThrowPythonError();
+            detail::ThrowPythonError();
         }
-        PythonObjectHandler handler = PythonObjectHandler::FromNewReference(resultPtr);
-        return handler;
+        return detail::PythonObjectHandler::FromNewReference(resultPtr);
     }
 
     PythonObject Python::Eval(StringView expr, const PythonObject &globals, const PythonObject &locals)
@@ -247,9 +248,8 @@ namespace s3d
         PyObject *resultPtr = PyRun_String(expr, Py_eval_input, static_cast<PyObject *>(globals.getHandler().get()), static_cast<PyObject *>(locals.getHandler().get()));
         if (resultPtr == NULL)
         {
-            ThrowPythonError();
+            detail::ThrowPythonError();
         }
-        PythonObjectHandler handler = PythonObjectHandler::FromNewReference(resultPtr);
-        return handler;
+        return detail::PythonObjectHandler::FromNewReference(resultPtr);
     }
 }

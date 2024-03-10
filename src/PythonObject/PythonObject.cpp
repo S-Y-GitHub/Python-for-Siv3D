@@ -300,6 +300,18 @@ namespace s3d
         return PythonObjectHandler::FromNewReference(resultPtr);
     }
 
+    PythonObject PythonObject::operator()(const PythonObject &arg) const
+    {
+        PythonObject argsTuple = PythonObject::Tuple({arg});
+        PyObject *resultPtr = PyObject_CallObject(static_cast<PyObject *>(m_handler.get()),
+                                                  static_cast<PyObject *>(argsTuple.m_handler.get()));
+        if (resultPtr == NULL)
+        {
+            detail::ThrowPythonError();
+        }
+        return detail::PythonObjectHandler::FromNewReference(resultPtr);
+    }
+
     PythonObject PythonObject::operator()(std::initializer_list<PythonObject> args) const
     {
         const PythonObject argsTuple = Tuple(args);
@@ -505,6 +517,19 @@ namespace s3d
         return detail::ToArray(*this);
     }
 
+    void *PythonObject::getMemoryView() const
+    {
+        PyObject *memoryViewPtr = PyMemoryView_FromObject(static_cast<PyObject *>(m_handler.get()));
+        if (memoryViewPtr == NULL)
+        {
+            detail::ThrowPythonError();
+        }
+        Py_buffer *bufferPtr = PyMemoryView_GET_BUFFER(memoryViewPtr);
+        void *ptr = bufferPtr->buf;
+        Py_DECREF(memoryViewPtr);
+        return ptr;
+    }
+
     PythonObject::operator bool() const
     {
         int val = PyObject_IsTrue(static_cast<PyObject *>(m_handler.get()));
@@ -593,8 +618,6 @@ namespace s3d
     }
 
     const PythonObjectHandler &PythonObject::getHandler() const noexcept { return m_handler; }
-
-    PythonObject::operator const PythonObjectHandler &() const noexcept { return m_handler; }
 }
 
 size_t std::hash<PythonObject>::operator()(const PythonObject &obj) const

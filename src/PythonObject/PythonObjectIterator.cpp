@@ -10,10 +10,10 @@ namespace s3d
     using namespace detail;
 
     PythonObjectIterator::PythonObjectIterator()
-        : m_iterableHandler{}, m_iteratorHandler{}, m_itemHandler{} {};
+        : m_iterableHandler(), m_iteratorHandler(), m_itemHandler() {};
 
     PythonObjectIterator::PythonObjectIterator(const PythonObject &iterable)
-        : m_iterableHandler{iterable}
+        : m_iterableHandler(iterable.getHandler())
     {
         PyObject *iterPtr = PyObject_GetIter(static_cast<PyObject *>(iterable.getHandler().get()));
         if (iterPtr == NULL)

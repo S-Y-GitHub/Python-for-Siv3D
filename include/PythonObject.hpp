@@ -229,6 +229,10 @@ namespace s3d
 
         Optional<Array<PythonObject>> getOptArray() const;
 
+        /// @brief numpyなどのバッファを取得する。
+        /// @return バッファの先頭ポインタ
+        void *getMemoryView() const;
+
         [[nodiscard]] explicit operator int64() const;
 
         [[nodiscard]] explicit operator uint64() const;
