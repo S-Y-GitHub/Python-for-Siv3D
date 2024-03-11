@@ -70,7 +70,7 @@ namespace s3d
             PythonObjectHandler handler = PythonObjectHandler::FromNewReference(listPtr);
             for (size_t i = 0; i < array.size(); ++i)
             {
-                PythonObjectHandler elemHandler = array[i];
+                PythonObjectHandler elemHandler = array[i].getHandler();
                 Py_INCREF(elemHandler.get());
                 PyList_SET_ITEM(listPtr, i, static_cast<PyObject *>(elemHandler.get()));
             }
