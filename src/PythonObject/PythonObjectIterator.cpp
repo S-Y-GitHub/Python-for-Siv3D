@@ -10,7 +10,7 @@ namespace s3d
     using namespace detail;
 
     PythonObjectIterator::PythonObjectIterator()
-        : m_iterableHandler(), m_iteratorHandler(), m_itemHandler() {};
+        : m_iterableHandler(), m_iteratorHandler(), m_itemHandler(){};
 
     PythonObjectIterator::PythonObjectIterator(const PythonObject &iterable)
         : m_iterableHandler(iterable.getHandler())
@@ -36,7 +36,7 @@ namespace s3d
         {
             ThrowPythonError();
         }
-        return {iterable, PythonObjectHandler::FromNewReference(iterPtr), PythonObjectHandler{}};
+        return {iterable.getHandler(), PythonObjectHandler::FromNewReference(iterPtr), PythonObjectHandler{}};
     }
 
     PythonObject PythonObjectIterator::operator*() { return m_itemHandler; }
@@ -63,5 +63,5 @@ namespace s3d
     }
 
     PythonObjectIterator::PythonObjectIterator(const PythonObjectHandler &iterableHandler, PythonObjectHandler &&iteratorHandler, PythonObjectHandler &&itemHandler)
-        : m_iterableHandler{iterableHandler}, m_iteratorHandler{std::move(iteratorHandler)}, m_itemHandler{std::move(itemHandler)} {}
+        : m_iterableHandler(iterableHandler), m_iteratorHandler(std::move(iteratorHandler)), m_itemHandler(std::move(itemHandler)) {}
 }
