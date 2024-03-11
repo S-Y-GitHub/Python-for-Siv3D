@@ -14,7 +14,8 @@ Siv3DでPythonを使用できます。
 
 * Python3.8以上
 * Siv3D v0.6.14 (その他のバージョンは未確認)
-* macOS (Apple silicomも可・但しX86-64版のPythonが必要)
+* Windows (Visual Studio 2022)
+* macOS (Xcode) (Apple silicomも可・但しX86-64版のPythonが必要)
 
 ## Installation
 
