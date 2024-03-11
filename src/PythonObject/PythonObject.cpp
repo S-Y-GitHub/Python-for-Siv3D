@@ -165,7 +165,7 @@ namespace s3d
     }
 
     PythonObject::PythonObject(const BigInt &longValue)
-        : m_handler{ToPythonInt(longValue).getHandler()} {}
+        : m_handler(ToPythonInt(longValue).getHandler()) {}
 
     PythonObject::PythonObject(const double floatValue)
     {
@@ -201,13 +201,13 @@ namespace s3d
     }
 
     PythonObject::PythonObject(const Array<PythonObject> &listValue)
-        : m_handler{ToPythonList(listValue)} {}
+        : m_handler(ToPythonList(listValue).getHandler()) {}
 
     PythonObject::PythonObject(std::initializer_list<PythonObject> listValue)
-        : m_handler{ToPythonList(listValue)} {}
+        : m_handler(ToPythonList(listValue).getHandler()) {}
 
     PythonObject::PythonObject(const HashTable<PythonObject, PythonObject> &dictValue)
-        : m_handler{ToPythonDict(dictValue)} {}
+        : m_handler(ToPythonDict(dictValue).getHandler()) {}
 
     PythonObject PythonObject::List()
     {
