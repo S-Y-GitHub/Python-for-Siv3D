@@ -10,7 +10,7 @@ namespace s3d
     using namespace detail;
 
     PythonObject::PythonObjectElement::PythonObjectElement(const PythonObject &obj, const PythonObject &key)
-        : m_objHandler{obj}, m_keyHandler{key} {}
+        : m_objHandler(obj.getHandler()), m_keyHandler(key.getHandler()) {}
 
     const PythonObject &PythonObject::PythonObjectElement::operator=(const PythonObject &obj)
     {
