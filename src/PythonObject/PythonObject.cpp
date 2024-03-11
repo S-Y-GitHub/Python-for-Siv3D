@@ -87,7 +87,7 @@ namespace s3d
             PythonObjectHandler handler = PythonObjectHandler::FromNewReference(listPtr);
             for (const auto [idx, elem] : Indexed(initializerList))
             {
-                PythonObjectHandler elemHandler = elem;
+                PythonObjectHandler elemHandler = elem.getHandler();
                 Py_INCREF(elemHandler.get());
                 PyList_SET_ITEM(listPtr, idx, static_cast<PyObject *>(elemHandler.get()));
             }
