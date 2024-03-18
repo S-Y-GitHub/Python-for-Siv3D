@@ -4,19 +4,16 @@
 
 namespace s3d
 {
-    class ScopedPythonSubthreadGIL
+    class ScopedPythonSubthreadGIL : Uncopyable
     {
     public:
+        SIV3D_NODISCARD_CXX20
         ScopedPythonSubthreadGIL();
-
-        ScopedPythonSubthreadGIL(ScopedPythonSubthreadGIL &&gil) = default;
-
-        ScopedPythonSubthreadGIL(const ScopedPythonSubthreadGIL &) = delete;
 
         ~ScopedPythonSubthreadGIL();
 
     private:
-        struct ScopedPythonSubthreadGILDetail;
+        class ScopedPythonSubthreadGILDetail;
 
         std::unique_ptr<ScopedPythonSubthreadGILDetail> m_detail;
     };

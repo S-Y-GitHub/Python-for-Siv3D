@@ -20,7 +20,7 @@ namespace s3d
     };
 
     ScopedPythonSubthreadGIL::ScopedPythonSubthreadGIL()
-        : m_detail{std::make_unique<ScopedPythonSubthreadGILDetail>()} {}
+        : m_detail(std::make_unique<ScopedPythonSubthreadGILDetail>()) {}
 
     ScopedPythonSubthreadGIL::~ScopedPythonSubthreadGIL() {}
 }
