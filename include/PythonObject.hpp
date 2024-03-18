@@ -265,6 +265,12 @@ namespace s3d
 
         PythonObject getAttr(const char *name) const;
 
+        void setAttr(const PythonObject &name, const PythonObject &val);
+
+        void setAttr(StringView name, const PythonObject &val);
+
+        void setAttr(const char *name, const PythonObject &val);
+
         PythonObject getType() const;
 
         [[nodiscard]] bool isNone() const;

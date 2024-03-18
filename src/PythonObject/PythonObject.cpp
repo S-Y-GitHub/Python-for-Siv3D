@@ -300,6 +300,31 @@ namespace s3d
         return PythonObjectHandler::FromNewReference(attrPtr);
     }
 
+    void PythonObject::setAttr(StringView name, const PythonObject &val)
+    {
+        setAttr(name.toUTF8().c_str(), val);
+    }
+
+    void PythonObject::setAttr(const char *name, const PythonObject &val)
+    {
+        if (PyObject_SetAttrString(static_cast<PyObject *>(m_handler.get()),
+                                   name,
+                                   static_cast<PyObject *>(val.m_handler.get())) != 0)
+        {
+            detail::ThrowPythonError();
+        }
+    }
+
+    void PythonObject::setAttr(const PythonObject &name, const PythonObject &val)
+    {
+        if (PyObject_SetAttr(static_cast<PyObject *>(m_handler.get()),
+                             static_cast<PyObject *>(name.m_handler.get()),
+                             static_cast<PyObject *>(val.m_handler.get())) != 0)
+        {
+            detail::ThrowPythonError();
+        }
+    }
+
     PythonObject PythonObject::getType() const
     {
         PyObject *typePtr = PyObject_Type(static_cast<PyObject *>(m_handler.get()));
