@@ -16,5 +16,8 @@ namespace s3d
         ScopedPythonWith(PythonObject &&obj);
 
         ~ScopedPythonWith();
+
+    private:
+        PythonObject m_obj;
     };
 }

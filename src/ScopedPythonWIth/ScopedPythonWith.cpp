@@ -5,27 +5,9 @@
 #include <PythonError.hpp>
 
 ScopedPythonWith::ScopedPythonWith(const PythonObject &obj)
-    : PythonObject(obj)
-{
-    if (PyContext_Enter(static_cast<PyObject *>(getHandler().get())) != 0)
-    {
-        detail::ThrowPythonError();
-    }
-}
+    : PythonObject(obj.getAttr("__enter__")()), m_obj(obj) {}
 
 ScopedPythonWith::ScopedPythonWith(PythonObject &&obj)
-    : PythonObject(std::move(obj))
-{
-    if (PyContext_Enter(static_cast<PyObject *>(getHandler().get())) != 0)
-    {
-        detail::ThrowPythonError();
-    }
-}
+    : PythonObject(obj.getAttr("__enter__")()), m_obj(std::move(obj)) {}
 
-ScopedPythonWith::~ScopedPythonWith()
-{
-    if (PyContext_Exit(static_cast<PyObject *>(getHandler().get())) != 0)
-    {
-        detail::ThrowPythonError();
-    }
-}
+ScopedPythonWith::~ScopedPythonWith() { m_obj.getAttr("__exit__")({PythonObject(), PythonObject(), PythonObject()}); }
