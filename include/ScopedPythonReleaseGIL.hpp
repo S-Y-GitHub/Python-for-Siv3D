@@ -13,8 +13,6 @@ namespace s3d
         ~ScopedPythonReleaseGIL();
 
     private:
-        class ScopedPythonReleaseGILDetail;
-
-        std::unique_ptr<ScopedPythonReleaseGILDetail> m_detail;
+        void *m_threadStatePtr;
     };
 }

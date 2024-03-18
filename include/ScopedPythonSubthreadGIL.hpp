@@ -13,8 +13,6 @@ namespace s3d
         ~ScopedPythonSubthreadGIL();
 
     private:
-        class ScopedPythonSubthreadGILDetail;
-
-        std::unique_ptr<ScopedPythonSubthreadGILDetail> m_detail;
+        int m_state;
     };
 }

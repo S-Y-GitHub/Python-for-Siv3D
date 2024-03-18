@@ -4,23 +4,10 @@
 
 namespace s3d
 {
-    class ScopedPythonSubthreadGIL::ScopedPythonSubthreadGILDetail
-    {
-    public:
-        ScopedPythonSubthreadGILDetail() : m_state(PyGILState_Ensure()) {}
-
-        ~ScopedPythonSubthreadGILDetail() { PyGILState_Release(m_state); }
-
-        ScopedPythonSubthreadGILDetail(const ScopedPythonSubthreadGILDetail &) = delete;
-
-        ScopedPythonSubthreadGILDetail(ScopedPythonSubthreadGILDetail &&) = delete;
-
-    private:
-        PyGILState_STATE m_state;
-    };
+    static_assert(sizeof(PyGILState_STATE) <= sizeof(int));
 
     ScopedPythonSubthreadGIL::ScopedPythonSubthreadGIL()
-        : m_detail(std::make_unique<ScopedPythonSubthreadGILDetail>()) {}
+        : m_state(static_cast<int>(PyGILState_Ensure())) {}
 
-    ScopedPythonSubthreadGIL::~ScopedPythonSubthreadGIL() {}
+    ScopedPythonSubthreadGIL::~ScopedPythonSubthreadGIL() { PyGILState_Release(static_cast<PyGILState_STATE>(m_state)); }
 }
