@@ -144,6 +144,16 @@ namespace s3d
     PythonObject::PythonObject(PythonObjectHandler &&handler)
         : m_handler(std::move(handler)) {}
 
+    PythonObject::PythonObject(const bool boolValue)
+    {
+        PyObject *boolObjPtr = PyBool_FromLong(static_cast<long>(boolValue));
+        if (boolObjPtr == NULL)
+        {
+            ThrowPythonError();
+        }
+        m_handler = PythonObjectHandler::FromNewReference(boolObjPtr);
+    }
+
     PythonObject::PythonObject(const int64 longValue)
     {
         PyObject *longObjectPtr = PyLong_FromLongLong(longValue);

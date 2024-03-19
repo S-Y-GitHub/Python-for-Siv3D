@@ -87,6 +87,10 @@ namespace s3d
 
         PythonObject(detail::PythonObjectHandler &&handler);
 
+        /// @brief bool型のオブジェクトを構築する。
+        /// @param boolValue 値
+        explicit PythonObject(bool boolValue);
+
         /// @brief int型のオブジェクトを構築する。
         /// @param longValue 値
         explicit PythonObject(int64 longValue);
