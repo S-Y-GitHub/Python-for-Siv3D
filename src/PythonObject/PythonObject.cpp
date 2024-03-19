@@ -387,7 +387,45 @@ namespace s3d
         return PythonObjectHandler::FromNewReference(resultPtr);
     }
 
+    PythonObject PythonObject::operator()(const HashTable<std::string, PythonObject> &kwargs) const
+    {
+        PythonObject emptyTuple = Tuple({});
+        PythonObject kwargsDict = Dict();
+        for (const auto &[kw, arg] : kwargs)
+        {
+            kwargsDict[PythonObject(kw)] = arg;
+        }
+        PyObject *resultPtr = PyObject_Call(
+            static_cast<PyObject *>(m_handler.get()),
+            static_cast<PyObject *>(emptyTuple.m_handler.get()),
+            static_cast<PyObject *>(kwargsDict.m_handler.get()));
+        if (resultPtr == NULL)
+        {
+            ThrowPythonError();
+        }
+        return PythonObjectHandler::FromNewReference(resultPtr);
+    }
+
     PythonObject PythonObject::operator()(std::initializer_list<PythonObject> args, const HashTable<String, PythonObject> &kwargs) const
+    {
+        PythonObject argsTuple = Tuple(args);
+        PythonObject kwargsDict = Dict();
+        for (const auto &[kw, arg] : kwargs)
+        {
+            kwargsDict[PythonObject(kw)] = arg;
+        }
+        PyObject *resultPtr = PyObject_Call(
+            static_cast<PyObject *>(m_handler.get()),
+            static_cast<PyObject *>(argsTuple.m_handler.get()),
+            static_cast<PyObject *>(kwargsDict.m_handler.get()));
+        if (resultPtr == NULL)
+        {
+            ThrowPythonError();
+        }
+        return PythonObjectHandler::FromNewReference(resultPtr);
+    }
+
+    PythonObject PythonObject::operator()(std::initializer_list<PythonObject> args, const HashTable<std::string, PythonObject> &kwargs) const
     {
         PythonObject argsTuple = Tuple(args);
         PythonObject kwargsDict = Dict();

@@ -213,11 +213,22 @@ namespace s3d
         /// @return 戻り値
         PythonObject operator()(const HashTable<String, PythonObject> &kwargs) const;
 
+        /// @brief キーワード引数リストを使用してこのオブジェクトを呼び出す。
+        /// @param kwargs キーワード引数リスト
+        /// @return 戻り値
+        PythonObject operator()(const HashTable<std::string, PythonObject> &kwargs) const;
+
         /// @brief 引数リストとキーワード引数リストを使用してこのオブジェクトを呼び出す。
         /// @param args 引数リスト
         /// @param kwargs キーワード引数リスト
         /// @return 戻り値
         PythonObject operator()(std::initializer_list<PythonObject> args, const HashTable<String, PythonObject> &kwargs) const;
+
+        /// @brief 引数リストとキーワード引数リストを使用してこのオブジェクトを呼び出す。
+        /// @param args 引数リスト
+        /// @param kwargs キーワード引数リスト
+        /// @return 戻り値
+        PythonObject operator()(std::initializer_list<PythonObject> args, const HashTable<std::string, PythonObject> &kwargs) const;
 
         class PythonObjectElement
         {
