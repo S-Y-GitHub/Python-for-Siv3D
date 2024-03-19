@@ -157,11 +157,13 @@ namespace s3d
         }
     }
 
-    detail::PythonOutput Python::StdOut{};
+    using namespace detail;
 
-    detail::PythonOutput Python::StdErr{};
+    PythonOutput Python::StdOut{};
 
-    detail::PythonInput Python::StdIn{};
+    PythonOutput Python::StdErr{};
+
+    PythonInput Python::StdIn{};
 
     void Python::Initialize(const bool useStdIO)
     {
@@ -171,7 +173,7 @@ namespace s3d
         }
         if (useStdIO)
         {
-            detail::ImportSiv3D();
+            ImportSiv3D();
         }
         Py_Initialize(); // Python初期化
         {
@@ -213,9 +215,9 @@ namespace s3d
         PyObject *modulePtr = PyImport_ImportModule(moduleName);
         if (modulePtr == NULL)
         {
-            detail::ThrowPythonError();
+            ThrowPythonError();
         }
-        return detail::PythonObjectHandler::FromNewReference(modulePtr);
+        return PythonObjectHandler::FromNewReference(modulePtr);
     }
 
     PythonObject Python::Execute(StringView code, const PythonObject &globals, const PythonObject &locals)
@@ -228,9 +230,9 @@ namespace s3d
         PyObject *resultPtr = PyRun_String(code, Py_file_input, static_cast<PyObject *>(globals.getHandler().get()), static_cast<PyObject *>(locals.getHandler().get()));
         if (resultPtr == NULL)
         {
-            detail::ThrowPythonError();
+            ThrowPythonError();
         }
-        return detail::PythonObjectHandler::FromNewReference(resultPtr);
+        return PythonObjectHandler::FromNewReference(resultPtr);
     }
 
     PythonObject Python::ExecuteFile(StringView filePath, const PythonObject &globals, const PythonObject &locals)
@@ -249,9 +251,9 @@ namespace s3d
         PyObject *resultPtr = PyRun_File(fp, filePath, Py_file_input, static_cast<PyObject *>(globals.getHandler().get()), static_cast<PyObject *>(locals.getHandler().get()));
         if (resultPtr == NULL)
         {
-            detail::ThrowPythonError();
+            ThrowPythonError();
         }
-        return detail::PythonObjectHandler::FromNewReference(resultPtr);
+        return PythonObjectHandler::FromNewReference(resultPtr);
     }
 
     PythonObject Python::Eval(StringView expr, const PythonObject &globals, const PythonObject &locals)
@@ -264,8 +266,8 @@ namespace s3d
         PyObject *resultPtr = PyRun_String(expr, Py_eval_input, static_cast<PyObject *>(globals.getHandler().get()), static_cast<PyObject *>(locals.getHandler().get()));
         if (resultPtr == NULL)
         {
-            detail::ThrowPythonError();
+            ThrowPythonError();
         }
-        return detail::PythonObjectHandler::FromNewReference(resultPtr);
+        return PythonObjectHandler::FromNewReference(resultPtr);
     }
 }

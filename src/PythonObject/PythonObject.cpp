@@ -214,9 +214,9 @@ namespace s3d
         PyObject *listPtr = PyList_New(0);
         if (listPtr == NULL)
         {
-            detail::ThrowPythonError();
+            ThrowPythonError();
         }
-        return detail::PythonObjectHandler::FromNewReference(listPtr);
+        return PythonObjectHandler::FromNewReference(listPtr);
     }
 
     PythonObject PythonObject::Dict()
@@ -224,9 +224,9 @@ namespace s3d
         PyObject *dictPtr = PyDict_New();
         if (dictPtr == NULL)
         {
-            detail::ThrowPythonError();
+            ThrowPythonError();
         }
-        return detail::PythonObjectHandler::FromNewReference(dictPtr);
+        return PythonObjectHandler::FromNewReference(dictPtr);
     }
 
     PythonObject PythonObject::Tuple(const Array<PythonObject> &tupleValue)
@@ -311,7 +311,7 @@ namespace s3d
                                    name,
                                    static_cast<PyObject *>(val.m_handler.get())) != 0)
         {
-            detail::ThrowPythonError();
+            ThrowPythonError();
         }
     }
 
@@ -321,7 +321,7 @@ namespace s3d
                              static_cast<PyObject *>(name.m_handler.get()),
                              static_cast<PyObject *>(val.m_handler.get())) != 0)
         {
-            detail::ThrowPythonError();
+            ThrowPythonError();
         }
     }
 
@@ -352,9 +352,9 @@ namespace s3d
                                                   static_cast<PyObject *>(argsTuple.m_handler.get()));
         if (resultPtr == NULL)
         {
-            detail::ThrowPythonError();
+            ThrowPythonError();
         }
-        return detail::PythonObjectHandler::FromNewReference(resultPtr);
+        return PythonObjectHandler::FromNewReference(resultPtr);
     }
 
     PythonObject PythonObject::operator()(std::initializer_list<PythonObject> args) const
@@ -382,7 +382,7 @@ namespace s3d
             static_cast<PyObject *>(kwargsDict.m_handler.get()));
         if (resultPtr == NULL)
         {
-            detail::ThrowPythonError();
+            ThrowPythonError();
         }
         return PythonObjectHandler::FromNewReference(resultPtr);
     }
@@ -401,7 +401,7 @@ namespace s3d
             static_cast<PyObject *>(kwargsDict.m_handler.get()));
         if (resultPtr == NULL)
         {
-            detail::ThrowPythonError();
+            ThrowPythonError();
         }
         return PythonObjectHandler::FromNewReference(resultPtr);
     }
@@ -537,7 +537,7 @@ namespace s3d
         {
             return none;
         }
-        return detail::ToBigInt(*this);
+        return ToBigInt(*this);
     }
 
     Optional<double> PythonObject::getOptDouble() const
@@ -588,7 +588,7 @@ namespace s3d
         {
             return none;
         }
-        return detail::ToHashTable(*this);
+        return ToHashTable(*this);
     }
 
     Optional<Array<PythonObject>> PythonObject::getOptArray() const
@@ -597,7 +597,7 @@ namespace s3d
         {
             return none;
         }
-        return detail::ToArray(*this);
+        return ToArray(*this);
     }
 
     void *PythonObject::getMemoryView() const
@@ -605,7 +605,7 @@ namespace s3d
         PyObject *memoryViewPtr = PyMemoryView_FromObject(static_cast<PyObject *>(m_handler.get()));
         if (memoryViewPtr == NULL)
         {
-            detail::ThrowPythonError();
+            ThrowPythonError();
         }
         Py_buffer *bufferPtr = PyMemoryView_GET_BUFFER(memoryViewPtr);
         void *ptr = bufferPtr->buf;

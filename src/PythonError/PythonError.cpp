@@ -32,7 +32,7 @@ namespace s3d
             String typeName = static_cast<String>(errorObj.getType());
             String what = static_cast<String>(errorObj);
             PythonObject tracebackObj = errorObj.getAttr("__traceback__");
-            Array<detail::PythonErrorTraceback> tracebacks;
+            Array<PythonErrorTraceback> tracebacks;
             while (tracebackObj)
             {
                 PythonObject fCode = tracebackObj.getAttr("tb_frame").getAttr("f_code");
@@ -49,8 +49,8 @@ namespace s3d
 
     using namespace detail;
 
-    PythonError::PythonError(String &&type, String &&what, Array<detail::PythonErrorTraceback> &&tracebacks)
-        : Error{std::move(what)}, m_type(std::move(type)), m_tracebacks(std::move(tracebacks)) {}
+    PythonError::PythonError(String &&type, String &&what, Array<PythonErrorTraceback> &&tracebacks)
+        : Error(std::move(what)), m_type(std::move(type)), m_tracebacks(std::move(tracebacks)) {}
 
     StringView PythonError::type() const noexcept
     {
