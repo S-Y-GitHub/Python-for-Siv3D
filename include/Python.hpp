@@ -156,6 +156,10 @@ namespace s3d
         /// @param space 名前空間
         /// @return 結果
         static PythonObject Eval(const char *expr, const PythonObject &globals = GlobalNS(), const PythonObject &locals = GlobalNS());
+
+        /// @brief ガベージコレクションを実行する。
+        /// @return 検出された到達不可能オブジェクト（破棄不可能なものも含む）の数
+        static int64 GarbageCollect();
     };
 }
 

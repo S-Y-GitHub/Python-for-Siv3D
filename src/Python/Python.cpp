@@ -270,4 +270,6 @@ namespace s3d
         }
         return PythonObjectHandler::FromNewReference(resultPtr);
     }
+
+    int64 Python::GarbageCollect() { return static_cast<int64>(PyGC_Collect()); }
 }
